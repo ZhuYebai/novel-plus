@@ -20,7 +20,7 @@
             and is_vip = #{isVip}
         </if>
         <if test="bookStatus != null">
-            and book_status = #{bookStatus}
+            and status = #{bookStatus}
         </if>
         <if test="wordCountMin != null">
             and word_count >= #{wordCountMin}
