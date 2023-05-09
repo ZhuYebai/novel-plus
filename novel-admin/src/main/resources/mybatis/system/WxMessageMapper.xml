@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java2nb.system.dao.WxMessageDao">
+
+	<select id="get" resultType="com.java2nb.system.domain.WxMessageDO">
+		select `id`,`menu_num`,`Title`,`picUrl`,`url`,`description`,`msg_type`,`menu_name` from wx_message where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.java2nb.system.domain.WxMessageDO">
+		select `id`,`menu_num`,`Title`,`picUrl`,`url`,`description`,`msg_type`,`menu_name` from wx_message
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="menuNum != null and menuNum != ''"> and menu_num = #{menuNum} </if>
+		  		  <if test="title != null and title != ''"> and Title = #{title} </if>
+		  		  <if test="picurl != null and picurl != ''"> and picUrl = #{picurl} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="msgType != null and msgType != ''"> and msg_type = #{msgType} </if>
+		  		  <if test="menuName != null and menuName != ''"> and menu_name = #{menuName} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from wx_message
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="menuNum != null and menuNum != ''"> and menu_num = #{menuNum} </if>
+		  		  <if test="title != null and title != ''"> and Title = #{title} </if>
+		  		  <if test="picurl != null and picurl != ''"> and picUrl = #{picurl} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		  <if test="description != null and description != ''"> and description = #{description} </if>
+		  		  <if test="msgType != null and msgType != ''"> and msg_type = #{msgType} </if>
+		  		  <if test="menuName != null and menuName != ''"> and menu_name = #{menuName} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.java2nb.system.domain.WxMessageDO">
+		insert into wx_message
+		(
+			`id`, 
+			`menu_num`, 
+			`Title`, 
+			`picUrl`, 
+			`url`, 
+			`description`, 
+			`msg_type`, 
+			`menu_name`
+		)
+		values
+		(
+			#{id}, 
+			#{menuNum}, 
+			#{title}, 
+			#{picurl}, 
+			#{url}, 
+			#{description}, 
+			#{msgType}, 
+			#{menuName}
+		)
+	</insert>
+
+	<insert id="saveSelective" parameterType="com.java2nb.system.domain.WxMessageDO">
+		insert into wx_message
+		(
+					<if test="id != null"> `id`,  </if>
+					<if test="menuNum != null"> `menu_num`,  </if>
+					<if test="title != null"> `Title`,  </if>
+					<if test="picurl != null"> `picUrl`,  </if>
+					<if test="url != null"> `url`,  </if>
+					<if test="description != null"> `description`,  </if>
+					<if test="msgType != null"> `msg_type`,  </if>
+					<if test="menuName != null"> `menu_name` </if>
+				)
+		values
+		(
+					<if test="id != null"> #{id},  </if>
+					<if test="menuNum != null"> #{menuNum},  </if>
+					<if test="title != null"> #{title},  </if>
+					<if test="picurl != null"> #{picurl},  </if>
+					<if test="url != null"> #{url},  </if>
+					<if test="description != null"> #{description},  </if>
+					<if test="msgType != null"> #{msgType},  </if>
+					<if test="menuName != null"> #{menuName} </if>
+				)
+	</insert>
+	 
+	<update id="update" parameterType="com.java2nb.system.domain.WxMessageDO">
+		update wx_message 
+		<set>
+			<if test="menuNum != null">`menu_num` = #{menuNum}, </if>
+			<if test="title != null">`Title` = #{title}, </if>
+			<if test="picurl != null">`picUrl` = #{picurl}, </if>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="msgType != null">`msg_type` = #{msgType}, </if>
+			<if test="menuName != null">`menu_name` = #{menuName}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from wx_message where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from wx_message where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

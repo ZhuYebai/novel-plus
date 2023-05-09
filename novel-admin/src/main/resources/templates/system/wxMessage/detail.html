@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+            <div class="ibox-content">
+            <form class="form-horizontal m-t" id="signupForm">
+                <input id="id" name="id" th:value="${wxMessage.id}"
+                       type="hidden">
+                                                                                            <div class="form-group">
+                        <label class="col-sm-3 control-label">菜单id：</label>
+
+                                                    <div style="padding-top:8px" class="col-sm-8"
+                                 th:text="${wxMessage.menuNum}">
+                            </div>
+                        
+                        
+
+                    </div>
+                                                                            <div class="form-group">
+                        <label class="col-sm-3 control-label">标题：</label>
+
+                                                    <div style="padding-top:8px" class="col-sm-8"
+                                 th:text="${wxMessage.title}">
+                            </div>
+                        
+                        
+
+                    </div>
+                                                                            <div class="form-group">
+                        <label class="col-sm-3 control-label">图片地址：</label>
+
+                                                    <div style="padding-top:8px" class="col-sm-8"
+                                 th:text="${wxMessage.picurl}">
+                            </div>
+                        
+                        
+
+                    </div>
+                                                                            <div class="form-group">
+                        <label class="col-sm-3 control-label">跳转地址：</label>
+
+                                                    <div style="padding-top:8px" class="col-sm-8"
+                                 th:text="${wxMessage.url}">
+                            </div>
+                        
+                        
+
+                    </div>
+                                                                            <div class="form-group">
+                        <label class="col-sm-3 control-label">图文描述：</label>
+
+                                                    <div style="padding-top:8px" class="col-sm-8"
+                                 th:text="${wxMessage.description}">
+                            </div>
+                        
+                        
+
+                    </div>
+                                                                            <div class="form-group">
+                        <label class="col-sm-3 control-label">消息类型：</label>
+
+                                                    <div style="padding-top:8px" class="col-sm-8 dict-type" dict-type="msg_type"
+                                 th:attr="dict-value=${wxMessage.msgType}">
+                            </div>
+
+                        
+
+                    </div>
+                                                                            <div class="form-group">
+                        <label class="col-sm-3 control-label">菜单名称：</label>
+
+                                                    <div style="padding-top:8px" class="col-sm-8"
+                                 th:text="${wxMessage.menuName}">
+                            </div>
+                        
+                        
+
+                    </div>
+                                                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div th:include="include::footer"></div>
+</body>
+</html>

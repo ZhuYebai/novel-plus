@@ -55,6 +55,16 @@ public class WeChatServiceImpl implements WeChatService {
 
     private void disposeText(StringBuilder sb, String content) {
         //查询是否存在该返回信息逻辑
+        sb.append("  <MsgType><![CDATA[news]]></MsgType>\n" +
+                "  <ArticleCount>1</ArticleCount>\n" +
+                "  <Articles>\n" +
+                "    <item>\n" +
+                "      <Title><![CDATA[title1]]></Title>\n" +
+                "      <Description><![CDATA[description1]]></Description>\n" +
+                "      <PicUrl><![CDATA[picurl]]></PicUrl>\n" +
+                "      <Url><![CDATA[url]]></Url>\n" +
+                "    </item>\n" +
+                "  </Articles>\n");
         //无逻辑，返回菜单
         String stringBuilder = "你发的信息小仙无法识别嗷！\n" +
                 "请回复以下数字：\n" +
