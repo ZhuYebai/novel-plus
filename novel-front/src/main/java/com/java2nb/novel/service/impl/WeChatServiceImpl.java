@@ -1,15 +1,22 @@
 package com.java2nb.novel.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.XmlUtil;
 import com.java2nb.novel.core.except.AesException;
 import com.java2nb.novel.core.utils.WXPublicUtils;
 import com.java2nb.novel.dto.WxMessageDto;
+import com.java2nb.novel.entity.WxMessage;
+import com.java2nb.novel.mapper.WxMessageMapper;
 import com.java2nb.novel.service.WeChatService;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zhu
@@ -19,6 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 @Slf4j
 public class WeChatServiceImpl implements WeChatService {
+
+    @Autowired
+    private WxMessageMapper wxMessageMapper;
+
     @Override
     public String weCheck(HttpServletRequest request) throws AesException {
         String msgSignature = request.getParameter("signature");
@@ -55,23 +66,35 @@ public class WeChatServiceImpl implements WeChatService {
 
     private void disposeText(StringBuilder sb, String content) {
         //查询是否存在该返回信息逻辑
-        sb.append("  <MsgType><![CDATA[news]]></MsgType>\n" +
-                "  <ArticleCount>1</ArticleCount>\n" +
-                "  <Articles>\n" +
-                "    <item>\n" +
-                "      <Title><![CDATA[title1]]></Title>\n" +
-                "      <Description><![CDATA[description1]]></Description>\n" +
-                "      <PicUrl><![CDATA[picurl]]></PicUrl>\n" +
-                "      <Url><![CDATA[url]]></Url>\n" +
-                "    </item>\n" +
-                "  </Articles>\n");
+        List<WxMessage> select = wxMessageMapper.select(SelectDSLCompleter.allRows());
+        List<WxMessage> collect = select.stream().filter(wxMessage -> wxMessage.getMenuNum().equals(Long.parseLong(content))).collect(Collectors.toList());
+        if (CollUtil.isNotEmpty(collect)) {
+            WxMessage wxMessage = collect.get(0);
+            switch (wxMessage.getMsgType()) {
+                case "news":
+                    sb.append("  <MsgType><![CDATA[" + wxMessage.getMsgType() + "]]></MsgType>\n" +
+                            "  <ArticleCount>1</ArticleCount>\n" +
+                            "  <Articles>\n" +
+                            "    <item>\n" +
+                            "      <Title><![CDATA[" + wxMessage.getTitle() + "]]></Title>\n" +
+                            "      <Description><![CDATA[" + wxMessage.getDescription() + "]]></Description>\n" +
+                            "      <PicUrl><![CDATA[" + wxMessage.getPicurl() + "]]></PicUrl>\n" +
+                            "      <Url><![CDATA[" + wxMessage.getUrl() + "]]></Url>\n" +
+                            "    </item>\n" +
+                            "  </Articles>\n");
+                default:
+                    break;
+            }
+
+            return;
+        }
         //无逻辑，返回菜单
-        String stringBuilder = "你发的信息小仙无法识别嗷！\n" +
-                "请回复以下数字：\n" +
-                "1. 北京\n" +
-                "2. 上海\n" +
-                "3. 武汉\n" +
-                "4. 小说";
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("你发的信息小仙无法识别嗷！\n");
+        stringBuilder.append("请回复以下数字：\n");
+        for (WxMessage wxMessage : select) {
+            stringBuilder.append(wxMessage.getMenuNum() + ". " + wxMessage.getMenuName());
+        }
         sb.append("<MsgType><![CDATA[text]]></MsgType>\n");
         sb.append("<Content><![CDATA[" + stringBuilder + "]]></Content>\n");
     }
