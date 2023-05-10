@@ -66,7 +66,7 @@ public class BookController {
     @GetMapping("/edit/{id}")
     @RequiresPermissions("novel:book:edit")
     String edit(@PathVariable("id") Long id, Model model) {
-            BookDO book = bookService.get(id);
+        BookDO book = bookService.get(id);
         model.addAttribute("book", book);
         return "novel/book/edit";
     }
@@ -75,7 +75,7 @@ public class BookController {
     @GetMapping("/detail/{id}")
     @RequiresPermissions("novel:book:detail")
     String detail(@PathVariable("id") Long id, Model model) {
-			BookDO book = bookService.get(id);
+        BookDO book = bookService.get(id);
         model.addAttribute("book", book);
         return "novel/book/detail";
     }
@@ -102,7 +102,7 @@ public class BookController {
     @RequestMapping("/update")
     @RequiresPermissions("novel:book:edit")
     public R update( BookDO book) {
-            bookService.update(book);
+        bookService.update(book);
         return R.ok();
     }
 
@@ -128,7 +128,7 @@ public class BookController {
     @ResponseBody
     @RequiresPermissions("novel:book:batchRemove")
     public R remove(@RequestParam("ids[]") Long[] ids) {
-            bookService.batchRemove(ids);
+        bookService.batchRemove(ids);
         return R.ok();
     }
 

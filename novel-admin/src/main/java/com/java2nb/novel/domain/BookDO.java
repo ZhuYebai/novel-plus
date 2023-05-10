@@ -31,6 +31,18 @@ public class BookDO implements Serializable {
     private Integer catId;
     //分类名
     private String catName;
+    //子分类ID
+    private String catChildId;
+    //子分类名
+    private String catChildName;
+    //男主角姓名
+    private String heroName;
+    //女主角姓名
+    private String ladyName;
+    //作品风格，0：甜宠，1：虐恋，2：其他：
+    private String bookStyle;
+    //作品标签
+    private String bookLabel;
     //小说封面
     private String picUrl;
     //小说名
@@ -88,6 +100,54 @@ public class BookDO implements Serializable {
     private Date crawlLastTime;
     //是否已停止更新，0：未停止，1：已停止
     private Integer crawlIsStop;
+
+    public String getCatChildId() {
+        return catChildId;
+    }
+
+    public void setCatChildId(String catChildId) {
+        this.catChildId = catChildId;
+    }
+
+    public String getCatChildName() {
+        return catChildName;
+    }
+
+    public void setCatChildName(String catChildName) {
+        this.catChildName = catChildName;
+    }
+
+    public String getHeroName() {
+        return heroName;
+    }
+
+    public void setHeroName(String heroName) {
+        this.heroName = heroName;
+    }
+
+    public String getLadyName() {
+        return ladyName;
+    }
+
+    public void setLadyName(String ladyName) {
+        this.ladyName = ladyName;
+    }
+
+    public String getBookStyle() {
+        return bookStyle;
+    }
+
+    public void setBookStyle(String bookStyle) {
+        this.bookStyle = bookStyle;
+    }
+
+    public String getBookLabel() {
+        return bookLabel;
+    }
+
+    public void setBookLabel(String bookLabel) {
+        this.bookLabel = bookLabel;
+    }
 
     /**
      * 设置：主键
